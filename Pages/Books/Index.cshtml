@@ -1,8 +1,8 @@
-@page
-@model Popescu_Dorian_Ioan_Lab2.Pages.BookPages.IndexModel
+@page "/"
+@model Popescu_Dorian_Ioan_Lab2.Pages.Books.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Books";
 }
 
 <h1>Index</h1>
@@ -13,52 +13,45 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Book[0].Title)
-            </th>
-            
-            <th>
-                @Html.DisplayNameFor(model => model.Book[0].Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Book[0].PublishingDate)
-            </th>
-            <th>
- @Html.DisplayNameFor(model => model.Book[0].Publisher.PublisherName)
-            </th>
-<th>
-    @Html.DisplayNameFor(model => model.Book[0].Author.LastName)
-</th>
-
+            <th>@Html.DisplayNameFor(model => model.BookD.Books.FirstOrDefault().Title)</th>
+            <th>@Html.DisplayNameFor(model => model.BookD.Books.FirstOrDefault().Author)</th>
+            <th>@Html.DisplayNameFor(model => model.BookD.Books.FirstOrDefault().Price)</th>
+            <th>@Html.DisplayNameFor(model => model.BookD.Books.FirstOrDefault().PublishingDate)</th>
+            <th>@Html.DisplayNameFor(model => model.BookD.Books.FirstOrDefault().Publisher)</th>
+            <th>@Html.DisplayNameFor(model => model.BookD.Books.FirstOrDefault().BookCategories)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Book) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.Title)
-            </td>
+        @foreach (var item in Model.BookD.Books) {
             
-            <td>
-                @Html.DisplayFor(model => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PublishingDate)
-            </td>
-            <td>
- @Html.DisplayFor(modelItem => item.Publisher.PublisherName)
-            </td>
-<td>
-    @Html.DisplayFor(modelItem => item.Author.LastName)
-</td>
+            string selectedRow = "";
+            if (item.ID == Model.BookID)
+            {
+                selectedRow = "table-success";
+            }
 
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+            <tr class="@selectedRow">
+                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                <td>@Html.DisplayFor(modelItem => item.Author.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                <td>@Html.DisplayFor(modelItem => item.PublishingDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Publisher.PublisherName)</td>
+                
+                <!-- Aici se afiseaza categoriile -->
+                <td>
+                    @foreach (var category in item.BookCategories)
+                    {
+                        @category.Category.CategoryName <br />
+                    }
+                </td>
+
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
